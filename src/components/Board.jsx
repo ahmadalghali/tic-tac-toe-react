@@ -33,8 +33,7 @@ export default function Board() {
     determineResult()
   }, squares)
 
-
-  const determineResult = () => {
+  const hasWinningMove = (player) =>  {
 
     const HORIZONTAL_WINNING_COMBOS = [
       [1, 2, 3],
@@ -57,24 +56,23 @@ export default function Board() {
       ...DIAGONAL_WINNING_COMBOS
     ]
 
-    // loop over winning combos
-    const X_hasWinningCombo = WINNING_COMBINATIONS.some(winningCombination => {
+    return WINNING_COMBINATIONS.some(winningCombination => {
       // For every winningCombo ( [1, 2, 3] ) check if each cell has a value of X or O inside them == win
       // winningCombination.at(0)[0] // [1, 2, 3]
       return winningCombination.every(cell => {
         let square = squares.find(square => square.id === cell)
-        return square.value == PLAYERS.X
+        return square.value == player
       })
     })
 
-    const O_hasWinningCombo = WINNING_COMBINATIONS.some(winningCombination => {
-      // For every winningCombo ( [1, 2, 3] ) check if each cell has a value of X or O inside them == win
-      // winningCombination.at(0)[0] // [1, 2, 3]
-      return winningCombination.every(cell => {
-        let square = squares.find(square => square.id === cell)
-        return square.value == PLAYERS.O
-      })
-    })
+  }
+
+
+  const determineResult = () => {
+
+    const X_hasWinningCombo = hasWinningMove(PLAYERS.X)
+
+    const O_hasWinningCombo = hasWinningMove(PLAYERS.O)
 
     if (X_hasWinningCombo) {
       setStatus(GAME_STATUS.WINNER_X)
