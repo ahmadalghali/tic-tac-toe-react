@@ -26,9 +26,13 @@ export default function Board() {
     const updatedSquares = [...squares].map(square => square.id === clickedSquare.id ? {...square, value: currentPlayer} : square)
     setSquares(updatedSquares)
 
-    determineResult()
     switchToNextPlayer()
   }
+
+  useEffect(() => {
+    determineResult()
+  }, squares)
+
 
   const determineResult = () => {
 
@@ -52,20 +56,46 @@ export default function Board() {
       ...VERTICAL_WINNING_COMBOS,
       ...DIAGONAL_WINNING_COMBOS
     ]
-    
-    // if (WINNING_COMBINATIONS.some(combination => {
-    //   // combination.every(cell => cell === )
-    //   // if()
-    // }))
 
-    // setStatus(GAME_STATUS.TIE)
+    // loop over winning combos
+    const X_hasWinningCombo = WINNING_COMBINATIONS.some(winningCombination => {
+      // For every winningCombo ( [1, 2, 3] ) check if each cell has a value of X or O inside them == win
+      // winningCombination.at(0)[0] // [1, 2, 3]
+      return winningCombination.every(cell => {
+        let square = squares.find(square => square.id === cell)
+        return square.value == PLAYERS.X
+      })
+    })
+
+    const O_hasWinningCombo = WINNING_COMBINATIONS.some(winningCombination => {
+      // For every winningCombo ( [1, 2, 3] ) check if each cell has a value of X or O inside them == win
+      // winningCombination.at(0)[0] // [1, 2, 3]
+      return winningCombination.every(cell => {
+        let square = squares.find(square => square.id === cell)
+        return square.value == PLAYERS.O
+      })
+    })
+
+    if (X_hasWinningCombo) {
+      setStatus(GAME_STATUS.WINNER_X)
+    }  
+    
+    if (O_hasWinningCombo) {
+      setStatus(GAME_STATUS.WINNER_O)
+    } 
+
+    const boardIsFull = squares.every(square => square.value != null)
+    if (boardIsFull) {
+      setStatus(GAME_STATUS.TIE)
+    }
+
   }
 
   return (
-     <div className="board">
-        {squares.map(square => (
-          <div key={square.id} className="square" onClick={() => handleSquareClicked(square)}>{square.value}</div>
-        ))} 
+    <div className="board">
+          {squares.map(square => (
+            <div key={square.id} className="square" onClick={() => handleSquareClicked(square)}>{square.value}</div>
+          ))} 
     </div>
   )
 }
