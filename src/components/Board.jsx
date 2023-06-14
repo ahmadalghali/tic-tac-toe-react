@@ -1,4 +1,4 @@
-import React , { useEffect } from 'react'
+import { useEffect } from 'react'
 import useGameContext from '../hooks/useGameContext'
 import { PLAYERS, GAME_STATUS } from '../context/GameContext'
 
@@ -31,7 +31,7 @@ export default function Board() {
 
   useEffect(() => {
     determineResult()
-  }, squares)
+  }, [squares])
 
   const hasWinningMove = (player) =>  {
 

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import { createContext, useState } from 'react'
 
 export const SQUARES_INITIAL_STATE = [
   { id: 1, value: null},

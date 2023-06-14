@@ -1,4 +1,3 @@
-import React from 'react';
 import './static/style/main.css';
 import TicTacToeGame from './TicTacToeGame'
 import { GameProvider } from './context/GameContext'
